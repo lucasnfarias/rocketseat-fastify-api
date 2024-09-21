@@ -7,7 +7,7 @@ const app = fastify()
 
 app.register(fastifyCookie)
 
-app.addHook('preHandler', async (request, reply) => {
+app.addHook('preHandler', async (request) => {
   console.log(`[${request.method}] ${request.url}`)
 })
 
