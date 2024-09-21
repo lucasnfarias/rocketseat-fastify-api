@@ -10,7 +10,7 @@ export async function transactionRoutes(app: FastifyInstance) {
     return { transactions }
   })
 
-  app.get('/:id', async (request, response) => {
+  app.get('/:id', async (request, reply) => {
     const getTransactionParamsSchema = z.object({
       id: z.string().uuid(),
     })
@@ -22,9 +22,17 @@ export async function transactionRoutes(app: FastifyInstance) {
       .first()
 
     if (!transaction)
-      return response.status(404).send(`Transaction with id ${id} not found`)
+      return reply.status(404).send(`Transaction with id ${id} not found`)
 
     return { transaction }
+  })
+
+  app.get('/summary', async () => {
+    const summary = await knex('transactions')
+      .sum('amount', { as: 'amount' })
+      .first()
+
+    return { summary }
   })
 
   app.post('/', async (request, reply) => {
@@ -38,10 +46,22 @@ export async function transactionRoutes(app: FastifyInstance) {
       request.body,
     )
 
+    let sessionId = request.cookies.sessionId
+
+    if (!sessionId) {
+      sessionId = randomUUID()
+
+      reply.cookie('sessionId', sessionId, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      })
+    }
+
     await knex('transactions').insert({
       id: randomUUID(),
       title,
       amount: type === 'credit' ? amount : amount * -1,
+      session_id: sessionId,
     })
 
     return reply.status(201).send()
