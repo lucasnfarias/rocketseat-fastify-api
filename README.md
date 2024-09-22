@@ -4,7 +4,7 @@
 
 1. run `nvm use` (or install the version set on .nvmrc)
 2. run `npm i`
-3. run `npm run knex migrate:latest`
+3. run `npm run knex -- migrate:latest`
 4. run `npm run dev`
 
 ## Requisites:
