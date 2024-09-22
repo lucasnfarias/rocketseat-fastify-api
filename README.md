@@ -47,3 +47,7 @@
 
   - [TSX](https://tsx.is/) - tsx stands for TypeScript Execute and it's a Node.js enhancement to run TypeScript.
   - [TSUP](https://tsup.egoist.dev/) - bundle your TypeScript library with no config, powered by esbuild.
+
+- Deploy
+
+  - [Render](https://render.com/) - is a unified cloud to build and run all your apps and websites with free TLS certificates, global CDN, private networks and auto deploys from Git.
